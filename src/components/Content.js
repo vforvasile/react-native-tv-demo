@@ -10,6 +10,8 @@ import FocusDemo from './demos/FocusDemo';
 import ScrollDemo from './demos/ScrollDemo';
 import InputDemo from './demos/InputDemo';
 import VideoDemo from './demos/VideoDemo';
+import YogaMedicine from '../YogaMedicine';
+import InitialContent from '../InitialContent';
 
 const Stack = createStackNavigator();
 
@@ -17,30 +19,31 @@ const Content = () => {
   const [appContext, setAppContext] = useContext(AppContext);
 
   return (
-    <View
-      style={[
-        styles.navigator,
-        !appContext.menuVisible && styles.navigatorFullscreen,
-      ]}>
-      <Stack.Navigator
-        initialRouteName="home"
-        detachInactiveScreens={true}
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-          animationEnabled: false,
-          unmountInactiveScreen: true,
-          detachPreviousScreen: true,
-        }}>
-        <Stack.Screen name="home" component={Home} />
-        <Stack.Screen name="components" component={ComponentsDemo} />
-        <Stack.Screen name="events" component={EventsDemo} />
-        <Stack.Screen name="focus" component={FocusDemo} />
-        <Stack.Screen name="scroll" component={ScrollDemo} />
-        <Stack.Screen name="input" component={InputDemo} />
-        <Stack.Screen name="video" component={VideoDemo} />
-      </Stack.Navigator>
-    </View>
+    // <View
+    //   style={[
+    //     styles.navigator,
+    //     !appContext.menuVisible && styles.navigatorFullscreen,
+    //   ]}>
+    <Stack.Navigator
+      initialRouteName="home"
+      detachInactiveScreens={true}
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+        animationEnabled: false,
+        unmountInactiveScreen: true,
+        detachPreviousScreen: true,
+      }}>
+      <Stack.Screen name="home" component={InitialContent} />
+      <Stack.Screen name="YogaMedicine" component={YogaMedicine} />
+      <Stack.Screen name="components" component={ComponentsDemo} />
+      <Stack.Screen name="events" component={EventsDemo} />
+      <Stack.Screen name="focus" component={FocusDemo} />
+      <Stack.Screen name="scroll" component={ScrollDemo} />
+      <Stack.Screen name="input" component={InputDemo} />
+      <Stack.Screen name="video" component={VideoDemo} />
+    </Stack.Navigator>
+    // </View>
   );
 };
 
