@@ -112,8 +112,10 @@ const InitialContent = () => {
               },
             ]}
             onSubmitEditing={() => {
-              console.log('submit', inputUrl);
               setActiveInput(false);
+              if (!inputUrl) return;
+              navigate('BrowserScreen', {searchName: inputUrl});
+              setUrl('');
               onSubmit(true);
             }}
           />
@@ -123,9 +125,10 @@ const InitialContent = () => {
         <FocusableHighlight
           hasTVPreferredFocus={true}
           nativeID="right_bottom"
-          // hasTVPrefferedFocus
           onPress={() => {
-            // navigate('Browser', {searchName: 'hello'});
+            if (!inputUrl) return;
+            setUrl('');
+            navigate('BrowserScreen', {searchName: inputUrl});
           }}
           underlayColor={Style.buttonFocusedColor}
           styleFocused={{backgroundColor: '#039be5'}}

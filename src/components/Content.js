@@ -12,6 +12,7 @@ import InputDemo from './demos/InputDemo';
 import VideoDemo from './demos/VideoDemo';
 import YogaMedicine from '../YogaMedicine';
 import InitialContent from '../InitialContent';
+import BrowserScreen from '../BrowserScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,7 +37,7 @@ const Content = () => {
       }}>
       <Stack.Screen name="home" component={InitialContent} />
       <Stack.Screen name="YogaMedicine" component={YogaMedicine} />
-      <Stack.Screen name="components" component={ComponentsDemo} />
+      <Stack.Screen name="BrowserScreen" component={BrowserScreen} />
       <Stack.Screen name="events" component={EventsDemo} />
       <Stack.Screen name="focus" component={FocusDemo} />
       <Stack.Screen name="scroll" component={ScrollDemo} />
