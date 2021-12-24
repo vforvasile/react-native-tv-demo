@@ -21,6 +21,7 @@ const InitialContent = () => {
       <View style={{flexDirection: 'row'}}>
         {navigationList.map((item, index) => (
           <FocusableHighlight
+            hasTVPreferredFocus={index === 0}
             nativeID={`top_${item.value}`}
             key={item.value}
             onPress={() => {
@@ -123,7 +124,6 @@ const InitialContent = () => {
         </View>
 
         <FocusableHighlight
-          hasTVPreferredFocus={true}
           nativeID="right_bottom"
           onPress={() => {
             if (!inputUrl) return;
