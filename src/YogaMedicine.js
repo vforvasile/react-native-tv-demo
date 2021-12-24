@@ -1,10 +1,10 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Clipboard, StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 import Style from './styles/Style';
 
-const BASE_URL = 'https://practice.yogamedicine.com/my-playlists/';
+const BASE_URL = 'https://practice.yogamedicine.com/';
 
 const jsCode = `
 const iframe = document.querySelector('.vimeo-js');
@@ -63,33 +63,40 @@ const appendButtonScript = `
 `;
 
 const YogaMedicine = () => {
-  const [currentPath, setPath] = useState(BASE_URL);
-  const [inputUrl, setUrl] = useState(undefined);
-  const [valueSubmitted, onSubmit] = useState(false);
-  const [textInputFocused, setTextInputFocused] = useState(false);
+  const route = useRoute();
+  const path = route && route.params && route.params.path;
+  const initialPath = path ? `${BASE_URL}/${path}` : `${BASE_URL}/my-playlists`;
+
+  const [currentPath, setPath] = useState(initialPath);
 
   const navigation = useNavigation();
 
-  const route = useRoute();
-
-  const inputTextRef = useRef(null);
   const webviewRef = useRef(null);
-
-  const path = route && route.params && route.params.path;
 
   const showSearch = !currentPath.startsWith(
     'https://practice.yogamedicine.com/video_library/',
   );
 
-  //   console.log('aaaa', currentPath.split('.'));
+  const splitLink = currentPath.split('/');
 
-  useEffect(
-    useCallback(() => {
-      // Prevent react navigation to handle back button is player is fullscreen
-      return navigation.addListener('beforeRemove', (e) => {
-        console.log('before remove');
-      });
-    }, []),
+  const isOriginalPath = splitLink.some((item) => item === path);
+
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        if (isOriginalPath) {
+          navigation.dispatch(e.data.action);
+          // If we don't have unsaved changes, then we don't need to do anything
+          return;
+        }
+
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+        if (webviewRef && webviewRef.current) {
+          webviewRef.current.goBack();
+        }
+      }),
+    [navigation, isOriginalPath],
   );
 
   useEffect(() => {
@@ -126,7 +133,7 @@ const YogaMedicine = () => {
         isTVSelectable
         hasTVPreferredFocus
         source={{
-          uri: path ? `${BASE_URL}/${path}` : `${BASE_URL}/my-playlists`,
+          uri: initialPath,
         }}
       />
     </View>

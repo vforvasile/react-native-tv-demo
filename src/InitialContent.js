@@ -4,12 +4,7 @@ import {navigate} from './Navigation';
 import Style from './styles/Style';
 import FocusableHighlight from './components/focusable/FocusableHighlight';
 import FocusableOpacity from './components/focusable/FocusableOpacity';
-
-const navigationList = [
-  {value: 'favorites', name: 'Favorites'},
-  {value: 'my-playlists', name: 'Playlists'},
-  {value: 'all-classes', name: 'All Classes'},
-];
+import {navigationList} from './utils';
 
 const InitialContent = () => {
   const [inputUrl, setUrl] = useState(undefined);
@@ -30,7 +25,6 @@ const InitialContent = () => {
             }}
             underlayColor={Style.buttonFocusedColor}
             styleFocused={{backgroundColor: '#039be5'}}
-            stylePressed={{backgroundColor: 'red'}}
             style={styles.menuItem}>
             <Text style={styles.text}>{item.name}</Text>
           </FocusableHighlight>
@@ -46,7 +40,6 @@ const InitialContent = () => {
           }}
           underlayColor={Style.buttonUnfocusedColor}
           styleFocused={{backgroundColor: '#039be5'}}
-          stylePressed={{backgroundColor: Style.buttonPressedColor}}
           style={{
             width: Style.px(300),
             height: Style.px(50),
