@@ -12,8 +12,8 @@ let height = 1080;
 const Style = {
   backgroundColor: '#282c34',
   modalBackgroundColor: '#444c58',
-  buttonUnfocusedColor: '#61dafb',
-  buttonFocusedColor: '#fff',
+  buttonUnfocusedColor: 'transparent',
+  buttonFocusedColor: 'grey',
   buttonPressedColor: '#ccc',
   px: (size) => {
     return Math.round((size * (height / 1080)) / pixelRatio);

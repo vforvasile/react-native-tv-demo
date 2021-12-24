@@ -25,9 +25,9 @@ const InputDemo = () => {
   let autocompleteTimer = null;
 
   useEffect(() => {
-    if (inputTextRef.current) {
-      inputTextRef.current.focus();
-    }
+    // if (inputTextRef.current) {
+    //   inputTextRef.current.focus();
+    // }
     // Clean up
     return () => {
       clearTimeout(autocompleteTimer);
