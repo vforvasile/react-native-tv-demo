@@ -5,9 +5,11 @@ import Style from './styles/Style';
 import FocusableHighlight from './components/focusable/FocusableHighlight';
 import FocusableOpacity from './components/focusable/FocusableOpacity';
 import {navigationList} from './utils';
+import useNodeHandle from './hooks/useNodeHandle';
 
 const InitialContent = () => {
   const [inputUrl, setUrl] = useState(undefined);
+  const [activeInput, setActiveInput] = useState(false);
   const [valueSubmitted, onSubmit] = useState(false);
   const [textInputFocused, setTextInputFocused] = useState(false);
 
@@ -17,8 +19,9 @@ const InitialContent = () => {
     <View style={styles.left}>
       <Text style={styles.title}>Yoga Medicine</Text>
       <View style={{flexDirection: 'row'}}>
-        {navigationList.map((item) => (
+        {navigationList.map((item, index) => (
           <FocusableHighlight
+            nativeID={`top_${item.value}`}
             key={item.value}
             onPress={() => {
               navigate('YogaMedicine', {path: item.value});
@@ -34,35 +37,61 @@ const InitialContent = () => {
       <Text style={styles.title}>Search or Browse</Text>
 
       <View style={{flexDirection: 'row'}}>
-        <FocusableOpacity
+        <FocusableHighlight
+          nativeID="left_bottom"
           onPress={() => {
             setUrl('');
           }}
-          underlayColor={Style.buttonUnfocusedColor}
+          underlayColor={Style.buttonFocusedColor}
           styleFocused={{backgroundColor: '#039be5'}}
+          style={styles.smallMenuItem}>
+          <Text style={styles.text}>Clear</Text>
+        </FocusableHighlight>
+
+        <View
           style={{
-            width: Style.px(300),
-            height: Style.px(50),
-            margin: Style.px(10),
-            backgroundColor: Style.buttonUnfocusedColor,
+            position: 'relative',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text>Clear</Text>
-        </FocusableOpacity>
-        <View style={styles.container}>
+          {/* {!activeInput ? ( */}
+          <FocusableHighlight
+            nativeID="center_bottom_button"
+            onPress={() => {
+              setActiveInput(true);
+              if (inputTextRef && inputTextRef.current) {
+                inputTextRef.current.focus();
+              }
+            }}
+            underlayColor={Style.buttonFocusedColor}
+            styleFocused={{backgroundColor: '#039be5'}}
+            style={[
+              styles.bigMenuItem,
+              activeInput ? {backgroundColor: '#039be5'} : {},
+            ]}>
+            <Text numberOfLines={1} style={styles.text}>
+              {inputUrl ? inputUrl : 'Add direct link or Search Google'}
+            </Text>
+          </FocusableHighlight>
+          {/* ) : ( */}
           <TextInput
+            // nextFocusLeft={useNodeHandle(searchRef)}
+            // nextFocusRight={useNodeHandle(searchRef)}
+            nativeID="center_bottom_textinput"
             ref={inputTextRef}
             value={inputUrl}
+            disabled={!activeInput}
             onChangeText={(text) => setUrl(text)}
-            nativeID={'component_text_input'}
-            placeholder={'Add direct link or Search Google'}
-            placeholderTextColor={'gray'}
+            placeholder=""
+            placeholderTextColor={'transparent'}
+            numberOfLines={1}
             clearButtonMode={'always'}
             autoCorrect={false}
             autoFocus={false}
+            selectionColor="#f73378"
+            onBlur={() => setActiveInput(false)}
             onFocus={async () => {
-              setTextInputFocused(true);
+              // setTextInputFocused(true);
               const data = await Clipboard.getString();
               if (!data) {
                 return;
@@ -71,22 +100,38 @@ const InitialContent = () => {
                 setUrl(data);
               }
             }}
-            style={{
-              width: '100%',
-              height: Style.px(70),
-              padding: Style.px(10),
-              fontSize: Style.px(40),
-              color: '#fff',
-            }}
+            style={[
+              styles.inputStyle,
+              {
+                position: 'absolute',
+                top: 0,
+                bottom: 0,
+                right: 0,
+                left: 0,
+                color: 'transparent',
+              },
+            ]}
             onSubmitEditing={() => {
-              console.log('sbumit', inputUrl);
-              if (!inputUrl) {
-                return;
-              }
+              console.log('submit', inputUrl);
+              setActiveInput(false);
               onSubmit(true);
             }}
           />
+          {/* )} */}
         </View>
+
+        <FocusableHighlight
+          hasTVPreferredFocus={true}
+          nativeID="right_bottom"
+          // hasTVPrefferedFocus
+          onPress={() => {
+            // navigate('Browser', {searchName: 'hello'});
+          }}
+          underlayColor={Style.buttonFocusedColor}
+          styleFocused={{backgroundColor: '#039be5'}}
+          style={styles.smallMenuItem}>
+          <Text style={styles.text}>Search</Text>
+        </FocusableHighlight>
       </View>
     </View>
   );
@@ -103,6 +148,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  inputStyle: {
+    width: '100%',
+    // height: Style.px(70),
+    padding: Style.px(10),
+    fontSize: Style.px(40),
+    // color: '#fff',
   },
   logo: {
     width: Style.px(150),
@@ -126,6 +178,24 @@ const styles = StyleSheet.create({
   },
   menuItem: {
     width: Style.px(400),
+    height: Style.px(90),
+    margin: Style.px(50),
+    backgroundColor: Style.buttonUnfocusedColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bigMenuItem: {
+    width: Style.px(850),
+    height: Style.px(90),
+    padding: Style.px(10),
+
+    // margin: Style.px(50),
+    backgroundColor: Style.buttonUnfocusedColor,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  smallMenuItem: {
+    width: Style.px(180),
     height: Style.px(90),
     margin: Style.px(50),
     backgroundColor: Style.buttonUnfocusedColor,
