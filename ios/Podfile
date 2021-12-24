@@ -3,12 +3,12 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'ReactNativeTvDemo' do
+target 'YogaMedicine' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
-  target 'ReactNativeTvDemoTests' do
+  target 'YogaMedicineTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -23,10 +23,10 @@ target 'ReactNativeTvDemo' do
   end
 end
 
-target 'ReactNativeTvDemo-tvOS' do
-  # Pods for ReactNativeTvDemo-tvOS
+target 'YogaMedicine-tvOS' do
+  # Pods for YogaMedicine-tvOS
 
-  target 'ReactNativeTvDemo-tvOSTests' do
+  target 'YogaMedicine-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
